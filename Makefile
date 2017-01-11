@@ -31,7 +31,7 @@ gold/test.conll: $(SECTIONS_DIR)/$(TEST)
 sections: $(SECTIONS:%=$(SECTIONS_DIR)/%)
 
 $(SECTIONS_DIR)/%:
-	mkdir -p $(SECTIONS_DIR)
+	@mkdir -p $(SECTIONS_DIR)
 	cat $(WSJ)/$*/* > tmp_section_$*.mrg
 	java -cp "$(CORENLP)/*" edu.stanford.nlp.trees.GrammaticalStructure \
 	-treeFile tmp_section_$*.mrg -conllx -basic -originalDependencies > $@
@@ -52,7 +52,8 @@ no_punc: $(SECTIONS:%=no_punc/%) \
   no_punc/no_punc_devel.conll \
   no_punc/no_punc_test.conll
 
-no_punc/%.conll:
+no_punc/%:
+	@mkdir -p no_punc
 	python ./script/remove_puncs.py < $(SECTIONS_DIR)/$* > $@
 
 no_punc/no_punc_train.conll: $(TRAIN:%=no_punc/%)
