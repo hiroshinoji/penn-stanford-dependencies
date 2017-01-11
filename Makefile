@@ -52,9 +52,9 @@ no_punc: $(SECTIONS:%=no_punc/%) \
   no_punc/no_punc_devel.conll \
   no_punc/no_punc_test.conll
 
-no_punc/%:
+no_punc/%: $(SECTIONS_DIR)/%
 	@mkdir -p no_punc
-	python ./script/remove_puncs.py < $(SECTIONS_DIR)/$* > $@
+	python ./script/remove_puncs.py < $^ > $@
 
 no_punc/no_punc_train.conll: $(TRAIN:%=no_punc/%)
 	$(call make_collection, no_punc, $^, $@)
